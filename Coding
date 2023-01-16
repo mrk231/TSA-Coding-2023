@@ -1,0 +1,62 @@
+//Created in Javascript
+
+function start(){
+    while(methodGeneratePin != 1 || methodGeneratePin != 2){
+        var methodGeneratePin = readInt("Welcome! Please enter a pin number. Enter 1 to generate a random PIN (0000 - 9999), or enter 2 to input your own PIN: ");
+        if (methodGeneratePin == 1){
+            var generatePin = Randomizer.nextInt(1000, 9999);
+            println("Your PIN is: " + generatePin);
+            break;
+        } else if (methodGeneratePin == 2){
+            var userPin = 0;
+            var userPin = readInt("Enter a 4 digit number for your PIN: ");
+            //Checks in pin is within range
+            if(userPin < 9999 && userPin > 999){
+                println("Your PIN is valid!.");
+                //Converting PIN to array of ints
+                var digitsArray = convertToDigits(userPin);
+                println(digitsArray);
+                
+                //Converting verification PIN to array of ints
+                var pinVerification = readInt("Please verify your pin number: ")
+                var pinVerificationArray = convertToDigits(pinVerification);
+                println(pinVerificationArray);
+                
+                //Checking each array against each other and totaling the number of similar digits
+                var numberOfSimilarDigits = 0;
+                for (var i = 0; i < 4; i++){
+                    if (digitsArray[i] == pinVerificationArray[i]){
+                        numberOfSimilarDigits++;
+                    }
+                }
+                if (numberOfSimilarDigits != 4){
+                    println("Whoops! Your verification isn't quite right. You have " + (4 - numberOfSimilarDigits) + " digit(s) off. Let's try that again.");
+                    start();
+                }
+                else
+                    println("Your pin has been successfully set! Your credit card is now in good hands :D Have a wonderful day!");
+                break;
+            } else {
+                while(userPin > 9999 || userPin < 0){
+                    println("Whoops! Your pin number is too large. It can only be 4 digits.");
+                    var userPin = readInt("Enter a 4 digit number for your PIN: ");
+                    if(userPin < 9999 && userPin > 0){
+                        println("Your PIN is a valid PIN.");
+                        var digitsArray = convertToDigits(userPin);
+                        println(digitsArray);
+                        break;
+            }
+                }
+                break;
+            }
+            
+        } else {
+            println("Invalid input.");
+        }
+    }
+
+}
+//Converts digits to an array of ints
+function convertToDigits(input){
+    return String(input).split('').map(Number);
+}
